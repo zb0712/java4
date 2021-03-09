@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szb.java4.mapper.MyFileMapper">
+
+
+    <insert id="addMyFile" parameterType="com.szb.java4.bean.MyFile">
+        insert into m_file(file_name,parent_folder_id,file_path,upload_time,format,`size`,examed,disk_id)
+        values (#{fileName},#{parentFolderId},#{filePath},#{uploadTime},#{format},#{size},#{examed},#{diskId})
+    </insert>
+    <update id="updateMyFile" parameterType="com.szb.java4.bean.MyFile">
+        update m_file set `examed`=#{examed} where `file_id`=#{fileId}
+    </update>
+    <delete id="deleteMyFile">
+        delete from m_file where file_id=#{id}
+    </delete>
+    <select id="queryMyFileByParentId" resultType="com.szb.java4.bean.MyFile">
+        select * from m_file where parent_folder_id=#{parentFolderId}
+    </select>
+    <select id="queryMyFileByDiskId" resultType="com.szb.java4.bean.MyFile">
+        select * from m_file where parent_folder_id is null and disk_id=#{diskId}
+    </select>
+    <select id="queryMyFileById" resultType="com.szb.java4.bean.MyFile">
+        select * from m_file where file_id=#{id}
+    </select>
+    <select id="queryNoJudgeFile" resultType="com.szb.java4.bean.MyFile">
+        select * from m_file where `examed`='0'
+    </select>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szb.java4.mapper.DiskMapper">
+
+    <insert id="insertDisk" parameterType="com.szb.java4.bean.Disk">
+        insert into m_disk(user_id,`size`,maxSize) values (#{userId},#{size},#{maxSize})
+    </insert>
+    <update id="updateDisk" parameterType="com.szb.java4.bean.Disk">
+        update m_disk set `size`=#{size} where disk_id=#{diskId}
+    </update>
+    <select id="queryByUserId" resultType="com.szb.java4.bean.Disk">
+        select * from m_disk where user_id=#{UserId}
+    </select>
+    <select id="queryById" resultType="com.szb.java4.bean.Disk">
+        select * from m_disk where disk_id=#{id}
+    </select>
+
+</mapper>

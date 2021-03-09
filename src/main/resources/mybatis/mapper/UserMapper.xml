@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szb.java4.mapper.UserMapper">
+    <update id="updateUser" parameterType="User">
+        update m_user set disk_id=#{diskId}
+        where user_id=#{userId}
+    </update>
+    <select id="queryAll" resultType="User">
+    select * from m_user
+  </select>
+    <select id="queryUserById" resultType="User" >
+        select * from m_user where user_id=#{id}
+    </select>
+    <select id="queryUserByName" resultType="User" parameterType="string">
+        select * from m_user where username=#{username}
+    </select>
+    <select id="queryUserByNameAndPassword" resultType="com.szb.java4.bean.User">
+        select * from m_user where username=#{username} and password=#{password}
+    </select>
+    <select id="queryByDiskId" resultType="com.szb.java4.bean.User">
+        select * from m_user where disk_id=#{diskId}
+    </select>
+    <insert id="insertUser" parameterType="User">
+        insert into m_user(username,password,disk_id,`identity`) values (#{username},#{password},#{diskId},#{identity})
+    </insert>
+</mapper>

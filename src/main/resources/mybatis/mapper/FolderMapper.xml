@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szb.java4.mapper.FolderMapper">
+
+    <resultMap id="Show" type="com.szb.java4.bean.FileFolderToShow">
+        <result column="file_id" property="id"></result>
+        <result column="file_name" property="name"></result>
+        <result column="parent_folder_id" property="parentFolderId"></result>
+        <result column="my_type" property="myType"></result>
+    </resultMap>
+
+    <insert id="addFolder" parameterType="Folder">
+        insert into folder(folder_name,parent_folder_id,disk_id) values (#{folderName},#{parentFolderId},#{diskId})
+    </insert>
+    <select id="queryFolderByParentId" resultType="com.szb.java4.bean.Folder">
+        select * from folder where parent_folder_id=#{parentFolderId}
+    </select>
+    <select id="queryFolderByDiskId" resultType="com.szb.java4.bean.Folder">
+        select * from folder where parent_folder_id is null and disk_id=#{diskId}
+    </select>
+    <select id="queryFolderById" resultType="com.szb.java4.bean.Folder">
+        select * from folder where folder_id=#{id}
+    </select>
+    <select id="queryFileFolderByDiskId" resultMap="Show">
+        SELECT `m_file`.`file_id`,`m_file`.`file_name`,`m_file`.`parent_folder_id`,`m_file`.`my_type`
+        FROM `m_file`
+        WHERE parent_folder_id IS NULL AND disk_id=#{diskId}
+        UNION ALL
+        SELECT `folder`.`folder_id`,`folder`.`folder_name`,`folder`.`parent_folder_id`,`folder`.`my_type`
+        FROM`folder`
+        WHERE parent_folder_id IS NULL AND disk_id=#{diskId}
+        ORDER BY `file_id` DESC
+        limit #{current},#{pageSize}
+        ;
+    </select>
+    <select id="getRootPageTotalCount" resultType="java.lang.Integer">
+        select count(*) from
+        (SELECT `m_file`.`file_id`,`m_file`.`file_name`,`m_file`.`parent_folder_id`,`m_file`.`my_type`
+        FROM `m_file`
+        WHERE parent_folder_id IS NULL AND disk_id=#{diskId}
+        UNION ALL
+        SELECT `folder`.`folder_id`,`folder`.`folder_name`,`folder`.`parent_folder_id`,`folder`.`my_type`
+        FROM`folder`
+        WHERE parent_folder_id IS NULL AND disk_id=#{diskId}) as a;
+    </select>
+    <select id="queryFileFolderByParentId" resultMap="Show">
+        SELECT `m_file`.`file_id`,`m_file`.`file_name`,`m_file`.`parent_folder_id`,`m_file`.`my_type`
+        FROM `m_file`
+        WHERE parent_folder_id=#{ParentId}
+        UNION ALL
+        SELECT `folder`.`folder_id`,`folder`.`folder_name`,`folder`.`parent_folder_id`,`folder`.`my_type`
+        FROM`folder`
+        WHERE parent_folder_id=#{ParentId}
+        ORDER BY `file_id` DESC
+        limit #{current},#{pageSize}
+        ;
+    </select>
+    <select id="getPageTotalCount" resultType="java.lang.Integer">
+        select count(*) from
+        (SELECT `m_file`.`file_id`,`m_file`.`file_name`,`m_file`.`parent_folder_id`,`m_file`.`my_type`
+        FROM `m_file`
+        WHERE parent_folder_id=#{ParentId}
+        UNION ALL
+        SELECT `folder`.`folder_id`,`folder`.`folder_name`,`folder`.`parent_folder_id`,`folder`.`my_type`
+        FROM`folder`
+        WHERE parent_folder_id=#{ParentId}) as a
+        ;
+    </select>
+</mapper>
