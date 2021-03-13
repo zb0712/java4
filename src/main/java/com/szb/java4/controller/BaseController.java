@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 public class BaseController {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
-    protected static HttpSession session;
+    protected HttpSession session;
 
     @ModelAttribute
     public void set(HttpServletRequest request,HttpServletResponse response) {
